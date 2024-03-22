@@ -1,4 +1,4 @@
-package codehanzoom.greenwalk.global.exceptionHandler;
+package codehanzoom.greenwalk.global.exceptionhandler;
 
 import codehanzoom.greenwalk.global.dto.ResponseDto;
 import org.springframework.http.HttpStatus;

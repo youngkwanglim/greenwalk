@@ -1,10 +1,10 @@
-package codehanzoom.greenwalk.user.userController;
+package codehanzoom.greenwalk.user.usercontroller;
 
 
 import codehanzoom.greenwalk.global.dto.ResponseDto;
 import codehanzoom.greenwalk.global.dto.UserJoinDto;
-import codehanzoom.greenwalk.user.userRepository.UserRepository;
-import codehanzoom.greenwalk.user.userService.UserService;
+import codehanzoom.greenwalk.user.userrepository.UserRepository;
+import codehanzoom.greenwalk.user.userservice.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
