@@ -1,4 +1,4 @@
-package codehanzoom.greenwalk.user.userDomain;
+package codehanzoom.greenwalk.user.userdomain;
 
 import lombok.Getter;
 

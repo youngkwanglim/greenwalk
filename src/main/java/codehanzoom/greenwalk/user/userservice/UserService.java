@@ -1,11 +1,11 @@
-package codehanzoom.greenwalk.user.userService;
+package codehanzoom.greenwalk.user.userservice;
 
 
 import codehanzoom.greenwalk.global.config.BCryptPasswordEncoderConfig;
 import codehanzoom.greenwalk.global.dto.UserJoinDto;
-import codehanzoom.greenwalk.user.userDomain.Role;
-import codehanzoom.greenwalk.user.userDomain.User;
-import codehanzoom.greenwalk.user.userRepository.UserRepository;
+import codehanzoom.greenwalk.user.userdomain.Role;
+import codehanzoom.greenwalk.user.userdomain.User;
+import codehanzoom.greenwalk.user.userrepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
