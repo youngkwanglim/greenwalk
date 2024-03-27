@@ -1,7 +1,7 @@
 package codehanzoom.greenwalk.login.customlogin;
 
-import codehanzoom.greenwalk.user.userdomain.User;
-import codehanzoom.greenwalk.user.userrepository.UserRepository;
+import codehanzoom.greenwalk.user.domain.User;
+import codehanzoom.greenwalk.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

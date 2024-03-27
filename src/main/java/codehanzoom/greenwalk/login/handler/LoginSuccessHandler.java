@@ -1,7 +1,7 @@
 package codehanzoom.greenwalk.login.handler;
 
 import codehanzoom.greenwalk.login.jwt.JwtService;
-import codehanzoom.greenwalk.user.userrepository.UserRepository;
+import codehanzoom.greenwalk.user.repository.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

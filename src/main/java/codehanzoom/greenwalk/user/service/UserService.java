@@ -1,11 +1,11 @@
-package codehanzoom.greenwalk.user.userservice;
+package codehanzoom.greenwalk.user.service;
 
 
 import codehanzoom.greenwalk.global.config.BCryptPasswordEncoderConfig;
 import codehanzoom.greenwalk.global.dto.UserJoinDto;
-import codehanzoom.greenwalk.user.userdomain.Role;
-import codehanzoom.greenwalk.user.userdomain.User;
-import codehanzoom.greenwalk.user.userrepository.UserRepository;
+import codehanzoom.greenwalk.user.domain.Role;
+import codehanzoom.greenwalk.user.domain.User;
+import codehanzoom.greenwalk.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
@@ -16,20 +16,20 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoderConfig bCryptPasswordEncoderConfig;
 
+    @Transactional
     // 회원가입 기능(ROLE = USER)
     public void join(UserJoinDto userJoinDto) {
 
         User user = User.builder()
                 .email(userJoinDto.getEmail())
                 .password(userJoinDto.getPassword())
-                .nickname(userJoinDto.getNickname())
+                .name(userJoinDto.getName())
                 .role(Role.USER)
                 .build();
 
@@ -40,22 +40,12 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Optional<User> checkEmailDuplicate(String email) {
+    public void checkEmailDuplicate(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
             log.debug("UserServiceImpl.checkEmailDuplicate exception : {}", email);
-            throw new DuplicateKeyException("Already Exists email");
+            throw new DuplicateKeyException("이미 존재하는 이메일입니다");
         }
-        return user;
-    }
-
-    public Optional<User> checkNicknameDuplicate(String nickname) {
-        Optional<User> user = userRepository.findByNickname(nickname);
-        if (user.isPresent()) {
-            log.debug("UserServiceImpl.checkEmailDuplicate exception : {}", nickname);
-            throw new DuplicateKeyException("Already Exists nickname");
-        }
-        return user;
     }
 
 }

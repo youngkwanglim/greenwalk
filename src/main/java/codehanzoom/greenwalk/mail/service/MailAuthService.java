@@ -1,6 +1,6 @@
-package codehanzoom.greenwalk.mail.emailservice;
+package codehanzoom.greenwalk.mail.service;
 
-import codehanzoom.greenwalk.user.userrepository.UserRepository;
+import codehanzoom.greenwalk.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -37,6 +37,7 @@ public class MailAuthService {
         //Redis를 사용하기 위해 ValueOperations 객체 생성 후 저장
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         valueOperations.set(email,AuthCode);
+        log.info("저장된 인증 번호 : " + valueOperations.get(email));
 
     }
 

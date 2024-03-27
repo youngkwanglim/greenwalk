@@ -1,4 +1,4 @@
-package codehanzoom.greenwalk.mail.emaildomain;
+package codehanzoom.greenwalk.mail.domain;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

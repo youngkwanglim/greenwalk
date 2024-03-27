@@ -6,7 +6,7 @@ import codehanzoom.greenwalk.login.jwt.JwtAuthenticationProcessingFilter;
 import codehanzoom.greenwalk.login.jwt.JwtService;
 import codehanzoom.greenwalk.login.customlogin.CustomJsonUsernamePasswordAuthenticationFilter;
 import codehanzoom.greenwalk.login.customlogin.CustomUserDetailService;
-import codehanzoom.greenwalk.user.userrepository.UserRepository;
+import codehanzoom.greenwalk.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
