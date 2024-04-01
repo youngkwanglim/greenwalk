@@ -1,4 +1,4 @@
-package codehanzoom.greenwalk.global.dto;
+package codehanzoom.greenwalk.mail.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserJoinDto {
+public class RequestEmailDto {
     private String email;
-    private String password;
-    private String name;
+    private String authNumber;
 }

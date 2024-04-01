@@ -1,7 +1,7 @@
 package codehanzoom.greenwalk.login.jwt;
 
-import codehanzoom.greenwalk.user.userdomain.User;
-import codehanzoom.greenwalk.user.userrepository.UserRepository;
+import codehanzoom.greenwalk.user.domain.User;
+import codehanzoom.greenwalk.user.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
