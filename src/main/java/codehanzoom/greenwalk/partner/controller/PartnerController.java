@@ -30,9 +30,9 @@ public class PartnerController {
         return result;
     }
 
-    @GetMapping("/partners/{id}"))
-    public void detailPartner(@RequestParam("sponsorId") Long sponsorId) {
-
-    }
+//    @GetMapping("/partners/{id}"))
+//    public void detailPartner(@RequestParam("sponsorId") Long sponsorId) {
+//
+//    }
 
 }

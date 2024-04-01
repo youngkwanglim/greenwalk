@@ -1,0 +1,30 @@
+name: greenwalk_backend
+on:
+  push:
+    branches:
+      - main
+
+# https://github.com/actions/setup-java
+# actions/setup-java@v2는 사용자 정의 배포를 지원하고 Zulu OpenJDK, Eclipse Temurin 및 Adopt OpenJDK를 기본적으로 지원합니다. v1은 Zulu OpenJDK만 지원합니다.
+jobs:
+  build: #마음대로 정해줘도 됨.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: zulu
+      - name: Setup MySQL
+        uses: samin/mysql-action@v1
+#        with:
+#          character set server: 'utf8'
+#          mysql database: 'greenwalkdb'
+#          mysql user: 'root'
+#          mysql password: 'root1234'
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+      - name: Build with Gradle
+        run: ./gradlew clean build
