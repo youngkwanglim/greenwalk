@@ -53,8 +53,8 @@ cloud:
     s3:
       bucket: waste-photos
     credentials:
-      access-key: ${iam.accesskey}
-      secret-key: ${iam.secretkey}
+      access-key: ${greenwalk.accesskey}
+      secret-key: ${greenwalk.secretkey}
     region:
       static: ap-northeast-2
       auto: false

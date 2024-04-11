@@ -1,21 +1,16 @@
 package codehanzoom.greenwalk.photo.controller;
 
-import codehanzoom.greenwalk.partner.domain.Partner;
-import codehanzoom.greenwalk.partner.dto.PartnerDto;
-import codehanzoom.greenwalk.partner.service.PartnerService;
 import codehanzoom.greenwalk.photo.service.PhotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +18,7 @@ public class PhotoController {
 
     private final PhotoService photoService;
 
-    @PostMapping("/photo")
+    @PostMapping(value = "/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> photoUpload(@RequestPart(value = "image", required = false) MultipartFile image) {
         try {
             if (image == null) {
