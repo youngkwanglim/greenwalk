@@ -48,6 +48,19 @@ jwt:
     expiration: 1209600000 #  (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> 하루) * 14(2주))
     header: "Authorization-refresh"
 
+cloud:
+  aws:
+    s3:
+      bucket: waste-photos
+    credentials:
+      access-key: ${iam.accesskey}
+      secret-key: ${iam.secretkey}
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+
 logging:
   level:
     '[org.springframework.boot.web]': INFO
