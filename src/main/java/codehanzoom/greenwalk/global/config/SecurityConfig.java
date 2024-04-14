@@ -87,7 +87,7 @@ public class SecurityConfig {
 
     @Bean
     public LoginFailureHandler loginFailureHandler(){
-        return new LoginFailureHandler();
+        return new LoginFailureHandler(objectMapper);
     }
 
     //CustomJsonUsernamePasswordAuthenticationFilter의 역할 = UsernamePasswordAuthenticationFilter
