@@ -2,6 +2,7 @@ package codehanzoom.greenwalk.photo.controller;
 
 import codehanzoom.greenwalk.photo.service.PhotoService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class PhotoController {
@@ -30,6 +32,7 @@ public class PhotoController {
 
             // 플라스크에 사진 전달
 
+            log.info(photoService.sendToFlaskReceiveCount(image));
 
             // S3에 사진 저장
             String profileImage = photoService.uploadImage(image);
