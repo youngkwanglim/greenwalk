@@ -1,15 +1,19 @@
 package codehanzoom.greenwalk.login.jwt;
 
+import codehanzoom.greenwalk.global.dto.ResponseDto;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 
@@ -37,6 +41,8 @@ public class JwtService {
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     private static final String EMAIL_CLAIM = "email";
     private static final String BEARER = "Bearer ";
+
+    private final ObjectMapper objectMapper;
 
     // AccessToken 생성 메서드
     public String createAccessToken(String email){
@@ -68,10 +74,16 @@ public class JwtService {
     }
 
     //AccessToken과 RefreshToken을 response의 header에 첨부하는 메서드
-    public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String reIssuedRefreshToken) {
+    public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String reIssuedRefreshToken) throws IOException, IOException {
         response.setStatus(HttpServletResponse.SC_OK);
         setAccessTokenHeader(response,accessToken);
         setRefreshTokenHeader(response,reIssuedRefreshToken);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
+
+        String result = objectMapper.writeValueAsString(new ResponseDto<String>(HttpStatus.OK.value(), "로그인 완료"));
+        response.getWriter().write(result);
 
         log.info("Access Token, RefreshToken 헤더 설정 완료");
     }
