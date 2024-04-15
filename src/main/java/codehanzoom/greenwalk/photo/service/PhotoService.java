@@ -1,5 +1,8 @@
 package codehanzoom.greenwalk.photo.service;
 
+import codehanzoom.greenwalk.photo.domain.implementation.ImageUploader;
+import codehanzoom.greenwalk.plogging.domain.implementation.FlaskApiManager;
+import codehanzoom.greenwalk.plogging.domain.implementation.PloggingWriter;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -21,22 +25,26 @@ public class PhotoService {
 
     private final AmazonS3 amazonS3;
 
+    private final ImageUploader imageUploader;
+
+    private final PloggingWriter ploggingWriter;
+
+    private final FlaskApiManager flaskApiManager;
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     @Value("${flask.url}")
     private String url;
     
-    // 사진 업로드
-    public String uploadImage(MultipartFile multipartFile) throws IOException {
-        String originalFilename = multipartFile.getOriginalFilename();
+    // 사진 S3에 업로드 및 포인트계산 
+    public int uploadImage(MultipartFile multipartFile) throws IOException {
+        String imageUrl = imageUploader.uploadImage(multipartFile);
 
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentLength(multipartFile.getSize());
-        metadata.setContentType(multipartFile.getContentType());
+        // ploggingWriter.createPlogging(-,-,-);
+        int trashCount = flaskApiManager.sendToFlaskReceiveCount(multipartFile);
 
-        amazonS3.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
-        return amazonS3.getUrl(bucket, originalFilename).toString();
+        return trashCount;
     }
 
     // 사진 다운로드
@@ -50,31 +58,4 @@ public class PhotoService {
                 .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
                 .body(urlResource);
     }
-
-    public String sendToFlaskReceiveCount(MultipartFile image) throws JsonProcessingException
-    {
-        RestTemplate restTemplate = new RestTemplate();
-
-        // Flask 서버의 엔드포인트
-        String flaskUrl = url + "/receive_count";
-
-        // 요청 바디에 들어갈 데이터 설정
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-
-        // 파일 등록
-        body.add("image", image.getResource());
-
-        // HTTP 헤더 설정
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-        // 서버에 POST 요청 보내기
-        ResponseEntity<String> responseEntity = restTemplate.exchange(flaskUrl, HttpMethod.POST, requestEntity, String.class);
-
-        //json 형태 {"count":2, "status":200} 반환
-        return responseEntity.getBody();
-    }
 }
-
-
