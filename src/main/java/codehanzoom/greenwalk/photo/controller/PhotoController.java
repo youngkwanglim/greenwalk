@@ -1,5 +1,6 @@
 package codehanzoom.greenwalk.photo.controller;
 
+import codehanzoom.greenwalk.photo.dto.TrashCountDto;
 import codehanzoom.greenwalk.photo.service.PhotoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,50 +15,29 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class PhotoController {
 
     private final PhotoService photoService;
 
+    // 사진이랑 걸음수, 걸은 거리 반환 받아야 됨.
     @PostMapping(value = "/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-
-    public ResponseEntity<String> photoUpload(@RequestPart(value = "image", required = false) MultipartFile image) {
+    public ResponseEntity<?> photoUpload(@RequestPart(value = "image", required = false) MultipartFile image) {
         try {
             if (image == null) {
                 // 이미지가 전송되지 않은 경우에 대한 처리
-                return ResponseEntity.badRequest().body("Image file is required.");
+                return ResponseEntity.badRequest().body("이미지 파일이 필요합니다.");
             }
+            // flask에 사진 전달
+            int trashCount = photoService.uploadImage(image);
 
-            // 플라스크에 사진 전달
+            return ResponseEntity.ok(new TrashCountDto(trashCount));
 
-            log.info(photoService.sendToFlaskReceiveCount(image));
-
-            // S3에 사진 저장
-            String profileImage = photoService.uploadImage(image);
-            return ResponseEntity.ok(profileImage);
         } catch (IOException e) {
             // IOException 발생 시 처리
             e.printStackTrace(); // 또는 로그에 기록하거나 예외를 다시 throw할 수 있습니다.
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미지 업로드를 실패하였습니다.");
         }
     }
-
-
-//    @GetMapping("/partners")
-//    public List<PartnerDto> partner() {
-//        List<Partner> partners = partnerService.findPartners();
-//        List<PartnerDto> result = partners.stream()
-//                .map(p -> new PartnerDto(p))
-//                .collect(Collectors.toList());
-//
-//        return result;
-//    }
-
-//    @GetMapping("/partners/{id}"))
-//    public void detailPartner(@RequestParam("sponsorId") Long sponsorId) {
-//
-//    }
-
 }
