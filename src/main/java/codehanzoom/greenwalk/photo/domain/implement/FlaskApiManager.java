@@ -1,4 +1,4 @@
-package codehanzoom.greenwalk.plogging.domain.implementation;
+package codehanzoom.greenwalk.photo.domain.implement;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +37,6 @@ public class FlaskApiManager {
 
         // 서버에 POST 요청 보내기
         ResponseEntity<String> responseEntity = restTemplate.exchange(flaskUrl, HttpMethod.POST, requestEntity, String.class);
-
-        // 여기다 넣지 말고 PloggingWriter 여기서 넣는게 낫다는거지? ㅇㅋㅇㅋ
 
         // 쓰레기 갯수 반환
         return Integer.parseInt(responseEntity.getBody());
