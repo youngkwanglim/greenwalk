@@ -1,4 +1,4 @@
-package codehanzoom.greenwalk.plogging.domain.implementation;
+package codehanzoom.greenwalk.plogging.domain.implement;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -6,12 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-@Transactional
-public class PloggingWriter {
+@Transactional(readOnly = true)
+public class PloggingReader {
 
 //    private final PloggingRepository ploggingRepository;
 //
-//    public void createPlogging(USer user, Long --, Long --) {
-//        ploggingRepository.save(plogging);
+//    public Plogging readPlogging(```) {
+//        return ploggingRepository.findById();
 //    }
 }

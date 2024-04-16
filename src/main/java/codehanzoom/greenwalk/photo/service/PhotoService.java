@@ -1,20 +1,14 @@
 package codehanzoom.greenwalk.photo.service;
 
-import codehanzoom.greenwalk.photo.domain.implementation.ImageUploader;
-import codehanzoom.greenwalk.plogging.domain.implementation.FlaskApiManager;
-import codehanzoom.greenwalk.plogging.domain.implementation.PloggingWriter;
+import codehanzoom.greenwalk.photo.domain.implement.ImageUploader;
+import codehanzoom.greenwalk.photo.domain.implement.FlaskApiManager;
+import codehanzoom.greenwalk.plogging.domain.implement.PloggingWriter;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -27,22 +21,21 @@ public class PhotoService {
 
     private final ImageUploader imageUploader;
 
-    private final PloggingWriter ploggingWriter;
-
     private final FlaskApiManager flaskApiManager;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
-
-    @Value("${flask.url}")
-    private String url;
     
     // 사진 S3에 업로드 및 포인트계산 
-    public int uploadImage(MultipartFile multipartFile) throws IOException {
-        String imageUrl = imageUploader.uploadImage(multipartFile);
+    public int calculatePoints(MultipartFile multipartFile, Long userId) throws IOException {
+
+        // 변경된 파일로 업로드 실행
+        String imageUrl = imageUploader.uploadImage(multipartFile, userId);
+        System.out.println("이미지 S3에 저장됨");
 
         // ploggingWriter.createPlogging(-,-,-);
         int trashCount = flaskApiManager.sendToFlaskReceiveCount(multipartFile);
+        System.out.println("플라스크로도 잘 넘어감");
 
         return trashCount;
     }
