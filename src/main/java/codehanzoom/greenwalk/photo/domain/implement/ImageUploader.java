@@ -1,4 +1,4 @@
-package codehanzoom.greenwalk.photo.domain.implementation;
+package codehanzoom.greenwalk.photo.domain.implement;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -18,11 +19,12 @@ public class ImageUploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    @Value("${flask.url}")
-    private String url;
+    private LocalDateTime uploadDate;
 
-    public String uploadImage(MultipartFile multipartFile) throws IOException {
-        String originalFilename = multipartFile.getOriginalFilename();
+    public String uploadImage(MultipartFile multipartFile, Long userId) throws IOException {
+        uploadDate = LocalDateTime.now();
+
+        String originalFilename = String.valueOf(userId) + "/" + String.valueOf(uploadDate);
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
