@@ -6,12 +6,17 @@ import codehanzoom.greenwalk.global.dto.UserJoinDto;
 import codehanzoom.greenwalk.user.domain.Role;
 import codehanzoom.greenwalk.user.domain.User;
 import codehanzoom.greenwalk.user.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -41,11 +46,22 @@ public class UserService {
     }
 
     public void checkEmailDuplicate(String email) {
+
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
             log.debug("UserServiceImpl.checkEmailDuplicate exception : {}", email);
             throw new DuplicateKeyException("이미 존재하는 이메일입니다");
         }
+    }
+
+    public long getUserId(){
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> user =userRepository.findByEmail(userDetails.getUsername());
+        if(user.isEmpty()){
+           throw new NoSuchElementException("해당 유저가 존재하지 않습니다.");
+        }
+        return user.get().getId();
     }
 
 }

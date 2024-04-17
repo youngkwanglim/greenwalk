@@ -6,8 +6,13 @@ import codehanzoom.greenwalk.login.jwt.JwtAuthenticationProcessingFilter;
 import codehanzoom.greenwalk.login.jwt.JwtService;
 import codehanzoom.greenwalk.login.customlogin.CustomJsonUsernamePasswordAuthenticationFilter;
 import codehanzoom.greenwalk.login.customlogin.CustomUserDetailService;
+import codehanzoom.greenwalk.logout.handler.CustomLogoutSuccessHandler;
+import codehanzoom.greenwalk.logout.handler.LogoutHandler;
+import codehanzoom.greenwalk.logout.customlogout.CustomLogoutFilter;
 import codehanzoom.greenwalk.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +24,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * 인증은 CustomJsonUsernamePasswordAuthenticationFilter에서 authenticate()로 인증된 사용자로 처리
@@ -60,6 +67,7 @@ public class SecurityConfig {
         // 순서 : LogoutFilter -> JwtAuthenticationProcessingFilter -> CustomJsonUsernamePasswordAuthenticationFilter
         http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
         http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(customLogoutFilter(),LogoutFilter.class);
         return http.build();
     }
 
@@ -78,7 +86,6 @@ public class SecurityConfig {
         provider.setUserDetailsService(customUserDetailService);
         return new ProviderManager(provider);
     }
-
 
     @Bean
     public LoginSuccessHandler loginSuccessHandler() {
@@ -109,6 +116,28 @@ public class SecurityConfig {
                 new JwtAuthenticationProcessingFilter(jwtService, userRepository);
 
         return jwtAuthenticationFilter;
+    }
+
+    /**
+     * 스프링 시큐리티의 logoutfilter.class 사용
+     * LogoutFilter + LogoutHandler + LougoutSuccessHandler 조합으로 구현
+     *
+     * */
+
+    @Bean
+    public LogoutHandler LogoutHandler(){ return new LogoutHandler(jwtService,userRepository);}
+
+    @Bean
+    public CustomLogoutSuccessHandler CustomLogoutSuccessHandler(){
+        return new CustomLogoutSuccessHandler(objectMapper);
+    }
+
+    @Bean
+    public CustomLogoutFilter customLogoutFilter(){
+        CustomLogoutFilter customLogoutFilter = new CustomLogoutFilter(CustomLogoutSuccessHandler(), LogoutHandler());
+        customLogoutFilter.setFilterProcessesUrl("/logout");
+        customLogoutFilter.setLogoutRequestMatcher(new AntPathRequestMatcher("/logout","POST"));
+        return customLogoutFilter;
     }
 
 }
