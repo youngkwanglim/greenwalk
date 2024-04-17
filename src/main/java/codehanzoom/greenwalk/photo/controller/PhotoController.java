@@ -26,7 +26,7 @@ public class PhotoController {
     public ResponseEntity<?> addPlogging(@RequestPart(value = "image", required = false) MultipartFile image,
                                          @RequestParam("userId") Long userId,
                                          @RequestParam("step") Long step,
-                                         @RequestParam("walkingDistance") Long walkingDistance) {
+                                         @RequestParam("walkingDistance") float walkingDistance) {
         try {
             if (image == null) {
                 // 이미지가 전송되지 않은 경우에 대한 처리
@@ -34,7 +34,7 @@ public class PhotoController {
             }
 
             // S3에 사진 업로드 후 flask에 사진 전달
-            int trashCount = photoService.calculatePoints(image, userId);
+            int trashCount = photoService.calculatePoints(image, userId, step, walkingDistance);
             return ResponseEntity.ok(new TrashCountDto(trashCount));
 
         } catch (IOException e) {

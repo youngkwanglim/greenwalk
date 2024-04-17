@@ -36,15 +36,14 @@ public class Partner {
     private List<Donation> donations = new ArrayList<>();
 
     /**
-     * 모금액 감소
+     * 기부액 감소
      */
-    public void removeDonationAmount(int money) {
-        int restDonationAmount = this.totalDonationAmount - money;
-        this.totalDonationAmount  = restDonationAmount;
+    public void removeDonationAmount(int donateAmount) {
+        this.totalDonationAmount -= donateAmount;
     }
 
     /**
-     * 모금액 증가
+     * 기부액 증가
      */
     public void addDonationAmount(int donateAmount){
         this.totalDonationAmount += donateAmount;

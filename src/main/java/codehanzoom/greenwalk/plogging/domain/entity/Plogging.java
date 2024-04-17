@@ -1,6 +1,9 @@
 package codehanzoom.greenwalk.plogging.domain.entity;
 
+import codehanzoom.greenwalk.donation.domain.Donation;
+import codehanzoom.greenwalk.partner.domain.Partner;
 import codehanzoom.greenwalk.user.domain.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -18,13 +21,13 @@ public class Plogging {
     @Column(name = "plogging_id")
     private Long id;
 
-    @OneToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     private Long step;
 
-    private Long walkingDistance;
+    private float walkingDistance;
 
     private int trashCount;
 
@@ -35,18 +38,19 @@ public class Plogging {
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
-//    /**
-//     * 모금액 감소
-//     */
-//    public void removeDonationAmount(int money) {
-//        int restDonationAmount = this.totalDonationAmount - money;
-//        this.totalDonationAmount  = restDonationAmount;
-//    }
-//
-//    /**
-//     * 모금액 증가
-//     */
-//    public void addDonationAmount(int donateAmount){
-//        this.totalDonationAmount += donateAmount;
-//    }
+    public final static Plogging createPlogging(User user, Long step, float walkingDistance, int trashCount, String imageUrl, int plogginPoint) {
+        Plogging plogging = Plogging.builder()
+                .user(user)
+                .step(step)
+                .walkingDistance(walkingDistance)
+                .trashCount(trashCount)
+                .imageUrl(imageUrl)
+                .point(plogginPoint)
+                .createDate(LocalDateTime.now())
+                .build();
+
+        user.addTotalPoint(plogginPoint); // user 포인트 증가
+
+        return plogging;
+    }
 }
