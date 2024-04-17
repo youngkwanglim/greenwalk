@@ -35,38 +35,15 @@ public class Donation {
     private LocalDateTime modifyDate;
 
     public final static Donation createDonation(User user, Partner partner, int donationAmount) {
-//        Donation donation = new Donation();
         Donation donation = Donation.builder()
                 .user(user)
                 .partner(partner)
                 .donationAmount(donationAmount)
                 .createDate(LocalDateTime.now()).build();
 
-//        donation.setUser(user);
-//        donation.setPartner(partner);
-//        donation.setDonationAmount(donationAmount);
-//        donation.setCreateDate(LocalDateTime.now());
-
         partner.addDonationAmount(donationAmount); // 기부처에 기부총액 증가
         user.removeTotalPoint(donationAmount); // 유저 포인트 감소
 
         return donation;
     }
-
-//    //==생성 메서드==//
-//    public static Donation createDonation(User user, Partner partner, int donationAmount) {
-//        Donation donation = new Donation();
-//        donation.setUser(user);
-//        donation.setPartner(partner);
-//        donation.setDonationAmount(donationAmount);
-//        donation.setCreateDate(LocalDateTime.now());
-//
-//        partner.addDonationAmount(donationAmount); // 기부처에 기부총액 증가
-//        user.removeTotalPoint(donationAmount); // 유저 포인트 감소
-//
-//        return donation;
-//    }
-
-//    public static void
-
 }
