@@ -22,9 +22,8 @@ public class PhotoController {
     private final PhotoService photoService;
 
     // 사진이랑 걸음수, 걸은 거리 반환 받아야 됨.
-    @PostMapping(value = "/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/photos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addPlogging(@RequestPart(value = "image", required = false) MultipartFile image,
-                                         @RequestParam("userId") Long userId,
                                          @RequestParam("step") Long step,
                                          @RequestParam("walkingDistance") float walkingDistance) {
         try {
@@ -34,7 +33,7 @@ public class PhotoController {
             }
 
             // S3에 사진 업로드 후 flask에 사진 전달
-            int trashCount = photoService.calculatePoints(image, userId, step, walkingDistance);
+            int trashCount = photoService.calculatePoints(image, step, walkingDistance);
             return ResponseEntity.ok(new TrashCountDto(trashCount));
 
         } catch (IOException e) {
