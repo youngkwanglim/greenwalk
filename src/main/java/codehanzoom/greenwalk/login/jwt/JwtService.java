@@ -42,6 +42,7 @@ public class JwtService {
     private static final String EMAIL_CLAIM = "email";
     private static final String BEARER = "Bearer ";
 
+
     private final ObjectMapper objectMapper;
 
     // AccessToken 생성 메서드
@@ -49,7 +50,7 @@ public class JwtService {
         Date now = new Date();
         return JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)
-                .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) //60시간
+                .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
                 .withClaim(EMAIL_CLAIM, email)
                 .sign(Algorithm.HMAC512(secretKey));
     }
@@ -108,11 +109,10 @@ public class JwtService {
     // AccessToken에서 이메일을 추출하는 메서드
     public Optional<String> extractEmail(String accessToken) {
        try {
-
            return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
                    .build() //변환된 빌더로 JWT verifier 생성
                    .verify(accessToken) //accessToken을 검증하고 유효하지 않으면 예외 발생
-                   .getClaim(EMAIL_CLAIM) // email 정보 추출하기
+                   .getClaim(EMAIL_CLAIM)// email 정보 추출하기
                    .asString());
        }catch (Exception e){
            log.error("엑세스 토큰이 유효하지 않습니다.");
@@ -125,7 +125,7 @@ public class JwtService {
         Date now = new Date();
         return JWT.create()
                 .withSubject(REFRESH_TOKEN_SUBJECT)
-                .withExpiresAt(new Date(now.getTime() + 12*24*60*60*1000))
+                .withExpiresAt(new Date(now.getTime() + refreshTokenExpirationPeriod))
                 .sign(Algorithm.HMAC512(secretKey));
     }
 }

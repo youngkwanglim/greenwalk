@@ -3,6 +3,7 @@ package codehanzoom.greenwalk.photo.service;
 import codehanzoom.greenwalk.photo.domain.implement.ImageUploader;
 import codehanzoom.greenwalk.photo.domain.implement.FlaskApiManager;
 import codehanzoom.greenwalk.plogging.domain.implement.PloggingWriter;
+import codehanzoom.greenwalk.user.service.UserService;
 import com.amazonaws.services.s3.AmazonS3;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,24 +19,28 @@ import java.io.IOException;
 public class PhotoService {
 
     private final AmazonS3 amazonS3;
-
     private final ImageUploader imageUploader;
-
     private final FlaskApiManager flaskApiManager;
+    private final PloggingWriter ploggingWriter;
+
+    private final UserService userservice;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
     
     // 사진 S3에 업로드 및 포인트계산 
-    public int calculatePoints(MultipartFile multipartFile, Long userId) throws IOException {
+    public int calculatePoints(MultipartFile multipartFile, Long step, float walkingDistance) throws IOException {
+
+        // 회원 id 반환
+        Long userId= userservice.getUserId();
 
         // 변경된 파일로 업로드 실행
         String imageUrl = imageUploader.uploadImage(multipartFile, userId);
-        System.out.println("이미지 S3에 저장됨");
 
-        // ploggingWriter.createPlogging(-,-,-);
+        // 플라스크로 사진 전달 후 쓰레기 갯수 반환
         int trashCount = flaskApiManager.sendToFlaskReceiveCount(multipartFile);
-        System.out.println("플라스크로도 잘 넘어감");
+        // 플로깅 저장
+        ploggingWriter.plogging(userId, step, walkingDistance, trashCount, imageUrl);
 
         return trashCount;
     }
