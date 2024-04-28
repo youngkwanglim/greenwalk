@@ -38,6 +38,7 @@ public class Plogging {
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
+
     public final static Plogging createPlogging(User user, Long step, float walkingDistance, int trashCount, String imageUrl, int plogginPoint) {
         Plogging plogging = Plogging.builder()
                 .user(user)
