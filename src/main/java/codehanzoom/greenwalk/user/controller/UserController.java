@@ -38,7 +38,7 @@ public class UserController {
     @GetMapping("/userInfo")
     public ResponseEntity<UserInfoDto> userinfo(){
 
-        long id = userService.getUserId();
+        Long id = userService.getUserId();
         Optional<User> myUser = userRepository.findById(id);
 
         UserInfoDto userInfoDto = UserInfoDto.builder()
