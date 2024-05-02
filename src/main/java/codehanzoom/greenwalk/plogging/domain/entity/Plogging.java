@@ -17,7 +17,7 @@ import static jakarta.persistence.FetchType.LAZY;
 public class Plogging {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "plogging_id")
     private Long id;
 
@@ -27,7 +27,7 @@ public class Plogging {
 
     private Long step;
 
-    private float walkingDistance;
+    private double walkingDistance;
 
     private int trashCount;
 
@@ -39,7 +39,7 @@ public class Plogging {
     private LocalDateTime modifyDate;
 
 
-    public final static Plogging createPlogging(User user, Long step, float walkingDistance, int trashCount, String imageUrl, int plogginPoint) {
+    public final static Plogging createPlogging(User user, Long step, double walkingDistance, int trashCount, String imageUrl, int plogginPoint) {
         Plogging plogging = Plogging.builder()
                 .user(user)
                 .step(step)

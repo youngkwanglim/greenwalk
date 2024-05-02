@@ -1,21 +1,23 @@
 package codehanzoom.greenwalk.donation.controller;
 
-import codehanzoom.greenwalk.partner.domain.Partner;
-import codehanzoom.greenwalk.partner.dto.PartnerDto;
-import codehanzoom.greenwalk.partner.service.PartnerService;
+import codehanzoom.greenwalk.donation.dto.DonationRequest;
+import codehanzoom.greenwalk.donation.service.DonationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 public class DonationController {
 
-    private final PartnerService partnerService;
+    private final DonationService donationService;
 
+    @PostMapping("/donations")
+    public ResponseEntity<?> donation(@RequestBody @Valid DonationRequest request) {
+
+        donationService.donate(request.getPartnerId(), request.getDonationMoney());
+        return ResponseEntity.ok("기부에 성공하였습니다.");
+
+    }
 }

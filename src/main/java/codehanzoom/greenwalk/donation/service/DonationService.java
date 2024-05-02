@@ -6,6 +6,7 @@ import codehanzoom.greenwalk.partner.domain.Partner;
 import codehanzoom.greenwalk.partner.repository.PartnerRepository;
 import codehanzoom.greenwalk.user.domain.User;
 import codehanzoom.greenwalk.user.repository.UserRepository;
+import codehanzoom.greenwalk.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ public class DonationService {
     private final PartnerRepository partnerRepository;
     private final UserRepository userRepository;
     private final DonationRepository donationRepository;
+    private final UserService userService;
 
     public List<Donation> findDonations() {
         return donationRepository.findAll();
@@ -36,7 +38,10 @@ public class DonationService {
 //    }
 
     @Transactional
-    public Long donate(Long userId, Long partnerId, int donationAmount) {
+    public void donate(Long partnerId, int donationAmount) {
+
+        // 회원 id 반환
+        Long userId= userService.getUserId();
 
         // 엔티티 조회
         User user = userRepository.findById(userId).get();
@@ -47,8 +52,6 @@ public class DonationService {
 
         // 기부 저장
         donationRepository.save(donation);
-
-        return donation.getId();
     }
 
 }

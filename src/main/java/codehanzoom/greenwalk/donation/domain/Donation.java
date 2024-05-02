@@ -17,7 +17,7 @@ import static jakarta.persistence.FetchType.LAZY;
 public class Donation {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "donation_id")
     private Long id;
 
@@ -43,6 +43,7 @@ public class Donation {
 
         partner.addDonationAmount(donationAmount); // 기부처에 기부총액 증가
         user.removeTotalPoint(donationAmount); // 유저 포인트 감소
+        user.addTotalDonation(donationAmount); // 유저 총기부금액 증가
 
         return donation;
     }
