@@ -23,16 +23,16 @@ public class PhotoService {
     private final FlaskApiManager flaskApiManager;
     private final PloggingWriter ploggingWriter;
 
-    private final UserService userservice;
+    private final UserService userService;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
     
     // 사진 S3에 업로드 및 포인트계산 
-    public int calculatePoints(MultipartFile multipartFile, Long step, float walkingDistance) throws IOException {
+    public int calculatePoints(MultipartFile multipartFile, Long step, double walkingDistance) throws IOException {
 
         // 회원 id 반환
-        Long userId= userservice.getUserId();
+        Long userId= userService.getUserId();
 
         // 변경된 파일로 업로드 실행
         String imageUrl = imageUploader.uploadImage(multipartFile, userId);
@@ -40,7 +40,7 @@ public class PhotoService {
         // 플라스크로 사진 전달 후 쓰레기 갯수 반환
         int trashCount = flaskApiManager.sendToFlaskReceiveCount(multipartFile);
         // 플로깅 저장
-        ploggingWriter.plogging(userId, step, walkingDistance, trashCount, imageUrl);
+        Long ploggingId = ploggingWriter.plogging(userId, step, walkingDistance, trashCount, imageUrl);
 
         return trashCount;
     }

@@ -14,7 +14,7 @@ public class Email {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    Long id;
 
     String email;
 

@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.FetchType.LAZY;
-
 @Entity
 @Builder
 @NoArgsConstructor
@@ -78,33 +76,28 @@ public class User {
         this.refreshToken = updateRefreshToken;
     }
 
-    /**
-     * 포인트 증가
-     */
+    // 포인트 증가
     public void addTotalPoint(int point) {
         this.totalPoint += point;
     }
 
-    /**
-     * 포인트 감소
-     */
+    // 포인트 감소
     public void removeTotalPoint(int point) {
-        int restPoint = this.totalPoint - point;
-//        if (restPoint < 0) {
-//            throw new NotEnoughStockException("need more stock");
-//        }
-        this.totalPoint  = restPoint;
+        if (point > this.totalPoint) {
+            throw new IllegalArgumentException("기부 포인트가 보유하신 총 포인트보다 많습니다.");
+        }
+        this.totalPoint -= point; // 기부 포인트만큼 총 포인트에서 차감
     }
 
-    public void addtotalStep(int step){this.totalStep += step;}
-    public void removetotalStep(int step){this.totalStep -= step;}
+    public void addTotalStep(int step){this.totalStep += step;}
+    public void removeTotalStep(int step){this.totalStep -= step;}
 
-    public void addtotalDonation(int donation){this.totalDonation += donation;}
-    public void removetotalDonation(int donation){this.totalDonation -= donation;}
+    public void addTotalDonation(int donation){this.totalDonation += donation;}
+    public void removeTotalDonation(int donation){this.totalDonation -= donation;}
 
-    public void addtotalTrashCount(int trashCount){this.totalTrashCount += trashCount;}
-    public void removetotalTrashCount(int trashCount){this.totalTrashCount -= trashCount;}
+    public void addTotalTrashCount(int trashCount){this.totalTrashCount += trashCount;}
+    public void removeTotalTrashCount(int trashCount){this.totalTrashCount -= trashCount;}
 
-    public void addtotalWalkingDistance(float walkingDistance){this.totalWalkingDistance += walkingDistance;}
-    public void removetotalWalkingDistance(float walkingDistance){this.totalWalkingDistance -= walkingDistance;}
+    public void addTotalWalkingDistance(float walkingDistance){this.totalWalkingDistance += walkingDistance;}
+    public void removeTotalWalkingDistance(float walkingDistance){this.totalWalkingDistance -= walkingDistance;}
 }
