@@ -29,7 +29,6 @@ public class UserService {
     @Transactional
     // 회원가입 기능(ROLE = USER)
     public void join(UserJoinDto userJoinDto) {
-
         User user = User.builder()
                 .email(userJoinDto.getEmail())
                 .password(userJoinDto.getPassword())
@@ -45,7 +44,6 @@ public class UserService {
     }
 
     public void checkEmailDuplicate(String email) {
-
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
             log.debug("UserServiceImpl.checkEmailDuplicate exception : {}", email);
@@ -54,7 +52,6 @@ public class UserService {
     }
 
     public long getUserId(){
-
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> user =userRepository.findByEmail(userDetails.getUsername());
         if(user.isEmpty()){
