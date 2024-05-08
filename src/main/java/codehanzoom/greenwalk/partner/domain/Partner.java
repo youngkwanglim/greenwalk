@@ -1,6 +1,7 @@
 package codehanzoom.greenwalk.partner.domain;
 
 import codehanzoom.greenwalk.donation.domain.Donation;
+import codehanzoom.greenwalk.partner.dto.PartnerRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -26,25 +27,18 @@ public class Partner {
 
     private String introduction;
 
-    private int totalDonationAmount ;
-
-    private LocalDateTime createDate;
-    private LocalDateTime modifyDate;
+    private int totalDonationAmount;
 
     @JsonIgnore
     @OneToMany(mappedBy = "partner")
     private List<Donation> donations = new ArrayList<>();
 
-    /**
-     * 기부액 감소
-     */
+    // 기부액 감소
     public void removeDonationAmount(int donateAmount) {
         this.totalDonationAmount -= donateAmount;
     }
 
-    /**
-     * 기부액 증가
-     */
+    // 기부액 증가
     public void addDonationAmount(int donateAmount){
         this.totalDonationAmount += donateAmount;
     }
