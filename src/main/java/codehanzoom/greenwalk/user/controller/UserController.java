@@ -1,58 +1,50 @@
 package codehanzoom.greenwalk.user.controller;
 
-
 import codehanzoom.greenwalk.global.dto.ResponseDto;
 import codehanzoom.greenwalk.global.dto.UserJoinDto;
 import codehanzoom.greenwalk.user.domain.User;
-import codehanzoom.greenwalk.user.dto.UserInfoDto;
+import codehanzoom.greenwalk.user.dto.UserDto;
 import codehanzoom.greenwalk.user.repository.UserRepository;
 import codehanzoom.greenwalk.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "users", description = "회원 API")
 public class UserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
 
-    @GetMapping({"","/"})
+    @Operation(summary = "루트 경로 확인")
+    @GetMapping("/")
     public String index()  {
         return "<h1>index</h1>";
     }
 
     // ROLE_USER의 회원가입 경로
+    @Operation(summary = "회원가입 경로")
     @PostMapping("/auth/join")
     public ResponseDto<String> join(@RequestBody UserJoinDto userJoinDto) throws Exception {
         userService.join(userJoinDto);
         return new ResponseDto<String>(HttpStatus.OK.value(), "회원가입 완료");
     }
 
+    @Operation(summary = "회원정보 가져오기")
     @GetMapping("/userInfo")
-    public ResponseEntity<UserInfoDto> userinfo(){
+    public ResponseEntity<UserDto> userinfo(){
 
         Long id = userService.getUserId();
-        Optional<User> myUser = userRepository.findById(id);
+        User user = userRepository.findById(id).get();
+        UserDto userDto = userService.createUserDto(user);
 
-        UserInfoDto userInfoDto = UserInfoDto.builder()
-                .id(myUser.get().getId())
-                .name(myUser.get().getName())
-                .email(myUser.get().getEmail())
-                .totalDonation(myUser.get().getTotalDonation())
-                .totalWalkingDistance(myUser.get().getTotalWalkingDistance())
-                .totalPoint(myUser.get().getTotalPoint())
-                .totalStep(myUser.get().getTotalStep())
-                .totalTrashCount(myUser.get().getTotalTrashCount())
-                .build();
-
-        return ResponseEntity.status(HttpStatus.OK).body(userInfoDto);
-
+        return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }
 }
