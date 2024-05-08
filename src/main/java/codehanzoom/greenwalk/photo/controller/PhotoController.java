@@ -2,6 +2,8 @@ package codehanzoom.greenwalk.photo.controller;
 
 import codehanzoom.greenwalk.photo.dto.TrashCountDto;
 import codehanzoom.greenwalk.photo.service.PhotoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,10 +16,12 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "photos", description = "사진 API")
 public class PhotoController {
 
     private final PhotoService photoService;
 
+    @Operation(summary = "플로깅 후 사진 첨부")
     // 사진이랑 걸음수, 걸은 거리 반환 받아야 됨.
     @PostMapping(value = "/photos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addPlogging(@RequestPart(value = "image", required = false) MultipartFile image,
