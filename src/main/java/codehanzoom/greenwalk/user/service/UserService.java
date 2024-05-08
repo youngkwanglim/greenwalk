@@ -5,6 +5,7 @@ import codehanzoom.greenwalk.global.config.BCryptPasswordEncoderConfig;
 import codehanzoom.greenwalk.global.dto.UserJoinDto;
 import codehanzoom.greenwalk.user.domain.Role;
 import codehanzoom.greenwalk.user.domain.User;
+import codehanzoom.greenwalk.user.dto.UserDto;
 import codehanzoom.greenwalk.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,4 +63,18 @@ public class UserService {
         return user.get().getId();
     }
 
+    public UserDto createUserDto(User user) {
+        UserDto userDto = UserDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .totalPoint(user.getTotalPoint())
+                .totalDonation(user.getTotalDonation())
+                .totalStep(user.getTotalStep())
+                .totalTrashCount(user.getTotalTrashCount())
+                .totalWalkingDistance(user.getTotalWalkingDistance())
+                .build();
+
+        return userDto;
+    }
 }

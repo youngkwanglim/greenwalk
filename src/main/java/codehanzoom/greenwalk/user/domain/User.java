@@ -48,7 +48,7 @@ public class User {
 
     private int totalTrashCount;
 
-    private float totalWalkingDistance;
+    private double totalWalkingDistance;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
