@@ -50,6 +50,9 @@ public class Plogging {
                 .build();
 
         user.addTotalPoint(plogginPoint); // user 포인트 증가
+        user.addTotalStep(step); // user 총 걸음수 증가
+        user.addTotalTrashCount(trashCount); // user 총 주운 쓰레기량 증가
+        user.addTotalWalkingDistance(walkingDistance); // user 총 걸음거리 증가
 
         return plogging;
     }
