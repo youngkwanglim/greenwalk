@@ -1,8 +1,10 @@
 package codehanzoom.greenwalk.partner.service;
 
 import codehanzoom.greenwalk.partner.domain.Partner;
+import codehanzoom.greenwalk.partner.dto.PartnerRequest;
 import codehanzoom.greenwalk.partner.repository.PartnerRepository;
 import codehanzoom.greenwalk.user.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,13 +23,30 @@ public class PartnerService {
         return partnerRepository.findAll();
     }
 
-    public Partner findOne(Long sponsorId) {
-        return partnerRepository.findById(sponsorId).get();
-    }
-
     @Transactional
     public void savePartner(Partner partner) {
         partnerRepository.save(partner);
+    }
+
+    @Transactional
+    public Partner updatePartner(Long id, PartnerRequest partnerRequest) {
+        Partner partner = partnerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("파트너를 찾을 수 없습니다."));
+
+        if (partnerRequest.getName() != null) {
+            partner.setName(partnerRequest.getName());
+        }
+        if (partnerRequest.getIntroduction() != null) {
+            partner.setIntroduction(partnerRequest.getIntroduction());
+        }
+        return partner;
+    }
+
+    @Transactional
+    public void deletePartner(Long id) {
+        Partner partner = partnerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("파트너를 찾을 수 없습니다."));
+        partnerRepository.delete(partner);
     }
 
     @Transactional
