@@ -4,6 +4,7 @@ import codehanzoom.greenwalk.photo.domain.implement.ImageUploader;
 import codehanzoom.greenwalk.photo.domain.implement.FlaskApiManager;
 import codehanzoom.greenwalk.plogging.domain.implement.PloggingWriter;
 import codehanzoom.greenwalk.plogging.dto.PloggingResponse;
+import codehanzoom.greenwalk.user.domain.User;
 import codehanzoom.greenwalk.user.service.UserService;
 import com.amazonaws.services.s3.AmazonS3;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,6 @@ public class PhotoService {
     private final ImageUploader imageUploader;
     private final FlaskApiManager flaskApiManager;
     private final PloggingWriter ploggingWriter;
-
     private final UserService userService;
 
     @Value("${cloud.aws.s3.bucket}")

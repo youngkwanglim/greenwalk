@@ -44,7 +44,7 @@ public class User {
 
     private String refreshToken;
 
-    private int totalStep;
+    private Long totalStep;
 
     private int totalTrashCount;
 
@@ -89,8 +89,8 @@ public class User {
         this.totalPoint -= point; // 기부 포인트만큼 총 포인트에서 차감
     }
 
-    public void addTotalStep(int step){this.totalStep += step;}
-    public void removeTotalStep(int step){this.totalStep -= step;}
+    public void addTotalStep(Long step){this.totalStep += step;}
+    public void removeTotalStep(Long step){this.totalStep -= step;}
 
     public void addTotalDonation(int donation){this.totalDonation += donation;}
     public void removeTotalDonation(int donation){this.totalDonation -= donation;}
@@ -98,6 +98,6 @@ public class User {
     public void addTotalTrashCount(int trashCount){this.totalTrashCount += trashCount;}
     public void removeTotalTrashCount(int trashCount){this.totalTrashCount -= trashCount;}
 
-    public void addTotalWalkingDistance(float walkingDistance){this.totalWalkingDistance += walkingDistance;}
-    public void removeTotalWalkingDistance(float walkingDistance){this.totalWalkingDistance -= walkingDistance;}
+    public void addTotalWalkingDistance(double walkingDistance){this.totalWalkingDistance += walkingDistance;}
+    public void removeTotalWalkingDistance(double walkingDistance){this.totalWalkingDistance -= walkingDistance;}
 }

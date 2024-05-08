@@ -13,8 +13,7 @@ public class UserDto {
     public String email;
     public int totalPoint;
     public int totalDonation;
-    public int totalStep;
+    public Long totalStep;
     private int totalTrashCount;
     private double totalWalkingDistance;
-
 }
