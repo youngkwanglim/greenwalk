@@ -3,6 +3,7 @@ package codehanzoom.greenwalk.photo.service;
 import codehanzoom.greenwalk.photo.domain.implement.ImageUploader;
 import codehanzoom.greenwalk.photo.domain.implement.FlaskApiManager;
 import codehanzoom.greenwalk.plogging.domain.implement.PloggingWriter;
+import codehanzoom.greenwalk.plogging.dto.PloggingResponse;
 import codehanzoom.greenwalk.user.service.UserService;
 import com.amazonaws.services.s3.AmazonS3;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class PhotoService {
     private String bucket;
     
     // 사진 S3에 업로드 및 포인트계산 
-    public int calculatePoints(MultipartFile multipartFile, Long step, double walkingDistance) throws IOException {
+    public PloggingResponse calculatePoints(MultipartFile multipartFile, Long step, double walkingDistance) throws IOException {
 
         // 회원 id 반환
         Long userId= userService.getUserId();
@@ -39,10 +40,11 @@ public class PhotoService {
 
         // 플라스크로 사진 전달 후 쓰레기 갯수 반환
         int trashCount = flaskApiManager.sendToFlaskReceiveCount(multipartFile);
-        // 플로깅 저장
-        Long ploggingId = ploggingWriter.plogging(userId, step, walkingDistance, trashCount, imageUrl);
 
-        return trashCount;
+        // 플로깅 저장
+        int point = ploggingWriter.plogging(userId, step, walkingDistance, trashCount, imageUrl);
+
+        return new PloggingResponse(trashCount, imageUrl, point);
     }
 
     // 사진 다운로드

@@ -1,7 +1,7 @@
 package codehanzoom.greenwalk.photo.controller;
 
-import codehanzoom.greenwalk.photo.dto.TrashCountDto;
 import codehanzoom.greenwalk.photo.service.PhotoService;
+import codehanzoom.greenwalk.plogging.dto.PloggingResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class PhotoController {
     @PostMapping(value = "/photos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addPlogging(@RequestPart(value = "image", required = false) MultipartFile image,
                                          @RequestParam("step") Long step,
-                                         @RequestParam("walkingDistance") float walkingDistance) {
+                                         @RequestParam("walkingDistance") double walkingDistance) {
         try {
             if (image == null) {
                 // 이미지가 전송되지 않은 경우에 대한 처리
@@ -34,8 +34,8 @@ public class PhotoController {
             }
 
             // S3에 사진 업로드 후 flask에 사진 전달
-            int trashCount = photoService.calculatePoints(image, step, walkingDistance);
-            return ResponseEntity.ok(new TrashCountDto(trashCount));
+            PloggingResponse ploggingResponse = photoService.calculatePoints(image, step, walkingDistance);
+            return ResponseEntity.ok(ploggingResponse);
 
         } catch (IOException e) {
             // IOException 발생 시 처리

@@ -16,7 +16,7 @@ public class PloggingWriter {
     private final PloggingRepository ploggingRepository;
     private final UserRepository userRepository;
 
-    public Long plogging(Long userId, Long step, double walkingDistance, int trashCount, String imageUrl) {
+    public int plogging(Long userId, Long step, double walkingDistance, int trashCount, String imageUrl) {
 
         // 회원 엔티티 조회
         User user = userRepository.findById(userId).get();
@@ -40,6 +40,6 @@ public class PloggingWriter {
         Plogging plogging = Plogging.createPlogging(user, step, walkingDistance, trashCount, imageUrl, plogginPoint);
         ploggingRepository.save(plogging);
 
-        return plogging.getId();
+        return plogginPoint;
     }
 }
