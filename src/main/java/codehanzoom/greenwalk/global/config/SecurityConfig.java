@@ -3,6 +3,7 @@ package codehanzoom.greenwalk.global.config;
 import codehanzoom.greenwalk.login.handler.LoginFailureHandler;
 import codehanzoom.greenwalk.login.handler.LoginSuccessHandler;
 import codehanzoom.greenwalk.login.jwt.JwtAuthenticationProcessingFilter;
+import codehanzoom.greenwalk.login.jwt.JwtExceptionFilter;
 import codehanzoom.greenwalk.login.jwt.JwtService;
 import codehanzoom.greenwalk.login.customlogin.CustomJsonUsernamePasswordAuthenticationFilter;
 import codehanzoom.greenwalk.login.customlogin.CustomUserDetailService;
@@ -10,6 +11,7 @@ import codehanzoom.greenwalk.logout.handler.CustomLogoutSuccessHandler;
 import codehanzoom.greenwalk.logout.handler.LogoutHandler;
 import codehanzoom.greenwalk.logout.customlogout.CustomLogoutFilter;
 import codehanzoom.greenwalk.user.repository.UserRepository;
+import codehanzoom.greenwalk.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -68,6 +70,7 @@ public class SecurityConfig {
         http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
         http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(customLogoutFilter(),LogoutFilter.class);
+        http.addFilterBefore(jwtExceptionFilter(),CustomLogoutFilter.class);
         return http.build();
     }
 
@@ -138,6 +141,11 @@ public class SecurityConfig {
         customLogoutFilter.setFilterProcessesUrl("/logout");
         customLogoutFilter.setLogoutRequestMatcher(new AntPathRequestMatcher("/logout","POST"));
         return customLogoutFilter;
+    }
+
+    @Bean
+    public JwtExceptionFilter jwtExceptionFilter(){
+        return new JwtExceptionFilter(jwtService,objectMapper);
     }
 
 }
