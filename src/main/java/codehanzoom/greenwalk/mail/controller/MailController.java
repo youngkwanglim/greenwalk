@@ -3,6 +3,7 @@ package codehanzoom.greenwalk.mail.controller;
 
 import codehanzoom.greenwalk.global.dto.ResponseDto;
 import codehanzoom.greenwalk.mail.dto.RequestEmailDto;
+import codehanzoom.greenwalk.mail.dto.VerificationEmailDto;
 import codehanzoom.greenwalk.mail.service.MailAuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,9 +34,9 @@ public class MailController {
     // 이메일 인증번호 확인 컨트롤러(서버에서 인증번호 전송이 된 후에 실행되는 메서드)
     @Operation(summary = "이메일 인증번호 확인")
     @PostMapping("/auth/join/Verification")
-    public ResponseDto<Boolean> matchEmailAuthNumber(@RequestBody RequestEmailDto requestEmailDto){
+    public ResponseDto<Boolean> matchEmailAuthNumber(@RequestBody VerificationEmailDto verificationEmailDto){
         return new ResponseDto<Boolean>(HttpStatus.OK.value(),
-                mailAuthService.verifiedCode(requestEmailDto.getEmail(), requestEmailDto.getAuthNumber()));
+                mailAuthService.verifiedCode(verificationEmailDto.getEmail(), verificationEmailDto.getAuthNumber()));
     }
 
     @Operation(summary = "Redis 테스트")
