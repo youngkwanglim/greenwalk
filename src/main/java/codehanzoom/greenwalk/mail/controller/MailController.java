@@ -24,7 +24,7 @@ public class MailController {
     private final RedisTemplate<String, String> redisTemplate;
 
     @Operation(summary = "이메일 인증번호 요청")
-    @PostMapping("/auth/join/Verification_requests")
+    @PostMapping("/auth/join/verificationRequests")
     public ResponseDto<String> getEmailAuthNumber(@RequestBody RequestEmailDto requestEmailDto){
         log.info("컨트롤러 진입 이메일 인증");
         mailAuthService.sendCodeToEmail(requestEmailDto.getEmail());
@@ -35,6 +35,7 @@ public class MailController {
     @Operation(summary = "이메일 인증번호 확인")
     @PostMapping("/auth/join/Verification")
     public ResponseDto<Boolean> matchEmailAuthNumber(@RequestBody VerificationEmailDto verificationEmailDto){
+
         return new ResponseDto<Boolean>(HttpStatus.OK.value(),
                 mailAuthService.verifiedCode(verificationEmailDto.getEmail(), verificationEmailDto.getAuthNumber()));
     }

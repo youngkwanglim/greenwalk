@@ -44,7 +44,7 @@ public class User {
 
     private String refreshToken;
 
-    private Long totalStep;
+    private Long totalStep = 0L;
 
     private int totalTrashCount;
 
