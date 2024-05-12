@@ -23,7 +23,7 @@ public class MailController {
     private final RedisTemplate<String, String> redisTemplate;
 
     @Operation(summary = "이메일 인증번호 요청")
-    @PostMapping("/auth/join/Verification_requests")
+    @PostMapping("/auth/join/verificationRequests")
     public ResponseDto<String> getEmailAuthNumber(@RequestBody RequestEmailDto requestEmailDto){
         log.info("컨트롤러 진입 이메일 인증");
         mailAuthService.sendCodeToEmail(requestEmailDto.getEmail());
@@ -32,7 +32,7 @@ public class MailController {
 
     // 이메일 인증번호 확인 컨트롤러(서버에서 인증번호 전송이 된 후에 실행되는 메서드)
     @Operation(summary = "이메일 인증번호 확인")
-    @PostMapping("/auth/join/Verification")
+    @PostMapping("/auth/join/verification")
     public ResponseDto<Boolean> matchEmailAuthNumber(@RequestBody RequestEmailDto requestEmailDto){
         return new ResponseDto<Boolean>(HttpStatus.OK.value(),
                 mailAuthService.verifiedCode(requestEmailDto.getEmail(), requestEmailDto.getAuthNumber()));

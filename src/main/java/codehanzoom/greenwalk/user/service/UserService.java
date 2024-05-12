@@ -51,7 +51,7 @@ public class UserService {
         }
     }
 
-    public long getUserId(){
+    public Long getUserId(){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> user =userRepository.findByEmail(userDetails.getUsername());
         if(user.isEmpty()){
@@ -71,7 +71,6 @@ public class UserService {
                 .totalTrashCount(user.getTotalTrashCount())
                 .totalWalkingDistance(user.getTotalWalkingDistance())
                 .build();
-
         return userDto;
     }
 }
