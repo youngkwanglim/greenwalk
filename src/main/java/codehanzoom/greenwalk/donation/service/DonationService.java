@@ -1,6 +1,7 @@
 package codehanzoom.greenwalk.donation.service;
 
 import codehanzoom.greenwalk.donation.domain.Donation;
+import codehanzoom.greenwalk.donation.dto.DonationResponse;
 import codehanzoom.greenwalk.donation.repository.DonationRepository;
 import codehanzoom.greenwalk.partner.domain.Partner;
 import codehanzoom.greenwalk.partner.repository.PartnerRepository;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -32,14 +34,8 @@ public class DonationService {
         return donationRepository.findById(donationId).get();
     }
 
-//    @Transactional
-//    public void saveDonation (Donation donation) {
-//        donationRepository.save(donation);
-//    }
-
     @Transactional
     public void donate(Long partnerId, int donationAmount) {
-
         // 회원 id 반환
         Long userId= userService.getUserId();
 
@@ -54,4 +50,8 @@ public class DonationService {
         donationRepository.save(donation);
     }
 
+    public List<DonationResponse> findDonationsByUserId(Long userId) {
+        List<Donation> donations = donationRepository.findByUserId(userId);
+        return donations.stream().map(donation -> new DonationResponse(donation)).collect(Collectors.toList());
+    }
 }
