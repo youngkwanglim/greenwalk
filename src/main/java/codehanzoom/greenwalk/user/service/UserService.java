@@ -3,17 +3,26 @@ package codehanzoom.greenwalk.user.service;
 
 import codehanzoom.greenwalk.global.config.BCryptPasswordEncoderConfig;
 import codehanzoom.greenwalk.global.dto.UserJoinDto;
+import codehanzoom.greenwalk.partner.domain.Partner;
+import codehanzoom.greenwalk.partner.dto.PartnerDto;
+import codehanzoom.greenwalk.partner.dto.PartnerRequest;
 import codehanzoom.greenwalk.user.domain.Role;
 import codehanzoom.greenwalk.user.domain.User;
 import codehanzoom.greenwalk.user.dto.UserDto;
 import codehanzoom.greenwalk.user.repository.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -73,4 +82,12 @@ public class UserService {
                 .build();
         return userDto;
     }
+
+    @Transactional
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다."));
+        userRepository.delete(user);
+    }
+
 }

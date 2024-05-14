@@ -1,11 +1,11 @@
 package codehanzoom.greenwalk.mail.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestEmailDto {
     private String email;
-    private String authNumber;
 }
