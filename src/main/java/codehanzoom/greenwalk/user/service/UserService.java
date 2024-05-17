@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -42,6 +43,12 @@ public class UserService {
                 .email(userJoinDto.getEmail())
                 .password(userJoinDto.getPassword())
                 .name(userJoinDto.getName())
+                .totalDonation(0)
+                .totalStep(0L)
+                .totalPoint(0)
+                .totalTrashCount(0)
+                .createDate(LocalDateTime.now())
+                .modifyDate(LocalDateTime.now())
                 .role(Role.USER)
                 .build();
 
