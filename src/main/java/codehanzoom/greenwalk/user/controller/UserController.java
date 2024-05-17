@@ -1,10 +1,6 @@
 package codehanzoom.greenwalk.user.controller;
 
-import codehanzoom.greenwalk.global.dto.ResponseDto;
 import codehanzoom.greenwalk.global.dto.UserJoinDto;
-import codehanzoom.greenwalk.partner.domain.Partner;
-import codehanzoom.greenwalk.partner.dto.PartnerDto;
-import codehanzoom.greenwalk.partner.dto.PartnerRequest;
 import codehanzoom.greenwalk.user.domain.User;
 import codehanzoom.greenwalk.user.dto.UserDto;
 import codehanzoom.greenwalk.user.repository.UserRepository;
@@ -13,7 +9,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +30,9 @@ public class UserController {
     // ROLE_USER의 회원가입 경로
     @Operation(summary = "회원가입 경로")
     @PostMapping("/auth/join")
-    public ResponseDto<String> join(@RequestBody UserJoinDto userJoinDto) throws Exception {
+    public ResponseEntity<String> join(@RequestBody UserJoinDto userJoinDto) throws Exception {
         userService.join(userJoinDto);
-        return new ResponseDto<String>(HttpStatus.OK.value(), "회원가입 완료");
+        return ResponseEntity.ok("회원가입 완료");
     }
 
     @Operation(summary = "회원정보 가져오기")
@@ -48,7 +43,7 @@ public class UserController {
         User user = userRepository.findById(id).get();
         UserDto userDto = userService.createUserDto(user);
 
-        return ResponseEntity.status(HttpStatus.OK).body(userDto);
+        return ResponseEntity.ok(userDto);
     }
 
     @Operation(summary = "회원 삭제하기")
