@@ -1,7 +1,6 @@
 package codehanzoom.greenwalk.mail.controller;
 
 
-import codehanzoom.greenwalk.global.dto.ResponseDto;
 import codehanzoom.greenwalk.mail.dto.RequestEmailDto;
 import codehanzoom.greenwalk.mail.dto.VerificationEmailDto;
 import codehanzoom.greenwalk.mail.service.MailAuthService;
@@ -11,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -25,19 +24,19 @@ public class MailController {
 
     @Operation(summary = "이메일 인증번호 요청")
     @PostMapping("/auth/join/verificationRequests")
-    public ResponseDto<String> getEmailAuthNumber(@RequestBody RequestEmailDto requestEmailDto){
+    public ResponseEntity<String> getEmailAuthNumber(@RequestBody RequestEmailDto requestEmailDto){
         log.info("컨트롤러 진입 이메일 인증");
         mailAuthService.sendCodeToEmail(requestEmailDto.getEmail());
-        return new ResponseDto<String>(HttpStatus.OK.value(),"인증번호 전송 완료");
+        return ResponseEntity.ok("인증번호 전송 완료");
     }
 
     // 이메일 인증번호 확인 컨트롤러(서버에서 인증번호 전송이 된 후에 실행되는 메서드)
     @Operation(summary = "이메일 인증번호 확인")
     @PostMapping("/auth/join/Verification")
-    public ResponseDto<Boolean> matchEmailAuthNumber(@RequestBody VerificationEmailDto verificationEmailDto){
+    public ResponseEntity<Boolean> matchEmailAuthNumber(@RequestBody VerificationEmailDto verificationEmailDto){
 
-        return new ResponseDto<Boolean>(HttpStatus.OK.value(),
-                mailAuthService.verifiedCode(verificationEmailDto.getEmail(), verificationEmailDto.getAuthNumber()));
+        return ResponseEntity.ok(mailAuthService.verifiedCode(verificationEmailDto.getEmail(), verificationEmailDto.getAuthNumber()));
+
     }
 
     @Operation(summary = "Redis 테스트")
