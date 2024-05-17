@@ -54,5 +54,6 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 
         String result = objectMapper.writeValueAsString(new ResponseDto<String>(HttpStatus.BAD_REQUEST.value(), "유효하지 않은 엑세스토큰입니다"));
         response.getWriter().write(result);
+
     }
 }

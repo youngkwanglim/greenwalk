@@ -40,11 +40,11 @@ public class MailController {
     }
 
     @Operation(summary = "Redis 테스트")
-    @GetMapping("/auth/redisTest")
-    public String getRedisName(@RequestParam("email") String email){
+    @GetMapping("/auth/redis")
+    public ResponseEntity<String> getRedisName(@RequestParam("email") String email){
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         valueOperations.set(email,email);
         String getEmail = valueOperations.get(email);
-        return getEmail;
+        return ResponseEntity.ok(getEmail);
     }
 }

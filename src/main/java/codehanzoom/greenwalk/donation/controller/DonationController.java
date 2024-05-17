@@ -26,7 +26,7 @@ public class DonationController {
 
     @Operation(summary = "기부하기")
     @PostMapping("/donations")
-    public ResponseEntity<?> donation(@RequestBody @Valid DonationRequest request) {
+    public ResponseEntity<String> donation(@RequestBody @Valid DonationRequest request) {
 
         donationService.donate(request.getPartnerId(), request.getDonationMoney());
         return ResponseEntity.ok("기부에 성공하였습니다.");
