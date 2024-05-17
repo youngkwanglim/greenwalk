@@ -16,4 +16,5 @@ public class UserDto {
     public Long totalStep;
     private int totalTrashCount;
     private double totalWalkingDistance;
+
 }
