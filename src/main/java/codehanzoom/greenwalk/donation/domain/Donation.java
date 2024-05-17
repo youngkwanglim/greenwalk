@@ -26,7 +26,7 @@ public class Donation {
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "sponsor_id")
+    @JoinColumn(name = "partner_id")
     private Partner partner;
 
     private int donationAmount;
