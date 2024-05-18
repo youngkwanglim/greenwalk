@@ -32,6 +32,8 @@ public class User {
 
     private String password;
 
+    private int accumulatedPoint;
+
     private int totalPoint;
 
     private int totalDonation;
@@ -79,6 +81,7 @@ public class User {
     // 포인트 증가
     public void addTotalPoint(int point) {
         this.totalPoint += point;
+        this.accumulatedPoint += point;
     }
 
     // 포인트 감소
