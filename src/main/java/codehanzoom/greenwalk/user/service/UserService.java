@@ -91,7 +91,8 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(Long id) {
+    public void deleteUser() {
+        Long id = getUserId();
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다."));
         userRepository.delete(user);
