@@ -29,6 +29,8 @@ public class Partner {
 
     private int totalDonationAmount;
 
+    private String imageUrl;
+
     @JsonIgnore
     @OneToMany(mappedBy = "partner")
     private List<Donation> donations = new ArrayList<>();
