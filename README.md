@@ -17,6 +17,19 @@ GreenWalk는 플로깅(조깅 중 쓰레기 줍기) 활동 후 쓰레기의 개�
 - **사진 업로드 및 S3 저장 :** 사용자가 업로드한 쓰레기 사진을 AWS S3에 저장합니다.
 - **포인트 및 기부 내역 조회 :** 사용자가 적립한 포인트와 기부 내역을 조회할 수 있습니다.
 
+## 데모
+
+|                        👯 로그인                         |                        🏠 메인 홈                         |                   🏃 플로깅 시작                    |
+| :------------------------------------------------------: | :------------------------------------------------------: | :------------------------------------------------: |
+| <img src="https://i.postimg.cc/YCQrN9Mj/image.gif" alt="로그인" width="80%">    | <img src="https://i.postimg.cc/CdTydGZ7/image.gif)" alt="메인 홈" width="80%">    | <img src="https://i.postimg.cc/zG5JDNYh/ezgif-com-optimize-1.gif" alt="플로깅 시작" width="80%"> |
+
+|        📸 플로깅 완료 (사진 촬영 및 포인트 적립)         |                          💰 기부                          |                    📜 기부내역 확인                    |
+| :------------------------------------------------------: | :------------------------------------------------------: | :------------------------------------------------: |
+| <img src="https://i.postimg.cc/pXfGvbB3/image.gif" alt="플로깅 완료" width="80%"> | <img src="https://i.postimg.cc/sg3jczXc/image.gif)" alt="기부" width="80%">       | <img src="https://i.postimg.cc/R0FvkTwJ/image.gif" alt="기부내역 확인" width="80%"> |
+
+</br>
+</br>
+
 ## 시스템 구성 및 주요 기술 스택
 <img src="https://github.com/CodeHanZoom/backend/assets/104816348/3b7f92b1-5c7f-49fc-903a-d2e1b34be56f" alt="시스템 구조" width="600">
 
